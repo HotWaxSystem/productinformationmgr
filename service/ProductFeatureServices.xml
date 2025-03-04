@@ -1,0 +1,49 @@
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+
+    <service verb="delete" noun="ProductFeature">
+        <in-parameters>
+            <parameter name="productFeatureId"/>
+        </in-parameters>
+        <actions>
+            <entity-find-one entity-name="moqui.productfeature.ProductFeature" value-field="featureList">
+                <field-map field-name="productFeatureId" from="context.productFeatureId"/>
+            </entity-find-one>
+            <if condition="featureList != null">
+                <entity-delete-related value-field="featureList" relationship-name="ProductFeatureAppl"/>
+
+                <entity-delete value-field="featureList"/>
+                <else>
+                    <message>Object does not exits</message>
+                </else>
+            </if>
+        </actions>
+    </service>
+
+    <service verb="fetch" noun="ProductFeature">
+        <in-parameters>
+            <parameter name="productFeatureTypeEnumId" entity-name="moqui.productfeature.ProductFeature"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productFeatureList" type="List"/>
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="moqui.productfeature.ProductFeature" list="productFeatureList">
+                <econdition field-name="productFeatureTypeEnumId" />
+            </entity-find>
+        </actions>
+    </service>
+
+    <service verb="fetch" noun="ProductFeatureAppl">
+        <in-parameters>
+            <parameter name="applTypeEnumId" entity-name="moqui.productfeatureappl.ProductFeatureAppl"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productFeatureApplList" type="List"/>
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="moqui.productfeatureappl.ProductFeatureAppl" list="productFeatureApplList">
+                <econdition field-name="applTypeEnumId" />
+            </entity-find>
+        </actions>
+    </service>
+</services>
